@@ -14,8 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -330,11 +328,6 @@ fun TheCounterApp(viewModel : CounterViewModel) {
              * - 버튼이 클릭되면 실행될 코드
              * - () -> Unit 타입 (파라미터 없고, 반환값 없음)
              *
-             * #### viewModel.increment()
-             * - ViewModel의 increment() 함수 호출
-             * - 비즈니스 로직은 ViewModel에 위임
-             * - View는 단순히 이벤트만 전달 (단방향 데이터 플로우)
-             *
              * ### 실행 흐름
              * 1. 사용자가 버튼 터치
              * 2. onClick 람다 실행
@@ -345,30 +338,8 @@ fun TheCounterApp(viewModel : CounterViewModel) {
              * 7. 화면에 새로운 값 표시
              */
             Button(onClick = { viewModel.increment() }) {
-                /**
-                 * Button의 content (람다)
-                 * - Button 내부에 표시될 컨텐츠
-                 * - 보통 Text, Icon 등을 배치
-                 * - 여러 요소를 Row, Column으로 구성 가능
-                 */
                 Text(text = "Increment")
             }
-
-            /**
-             * ## Button - Decrement
-             *
-             * 카운트를 감소시키는 버튼입니다.
-             *
-             * ### onClick = { viewModel.decrement() }
-             * - Increment와 동일한 패턴
-             * - ViewModel의 decrement() 함수 호출
-             * - count.value-- 실행으로 값 감소
-             *
-             * ### 버튼 간격
-             * - Row의 기본 동작으로 버튼들이 붙어있음
-             * - 필요시 Spacer(Modifier.width(8.dp))로 간격 추가 가능
-             * - 또는 horizontalArrangement = Arrangement.spacedBy(8.dp) 사용
-             */
             Button(onClick = { viewModel.decrement() }) {
                 Text(text = "Decrement")
             }
