@@ -77,50 +77,10 @@ class CounterRepository {
      */
     private var _counter = CounterModel(0)
 
-    /**
-     * ## getCounter()
-     *
-     * 현재 카운터 모델을 반환합니다.
-     *
-     * ### 역할
-     * - ViewModel이 현재 카운터 값을 읽을 때 사용
-     * - private counter를 외부에 노출하는 유일한 방법
-     *
-     * ### 반환 타입: CounterModel
-     * - counter 객체의 참조를 반환
-     * - ViewModel이 counter.count에 접근 가능
-     *
-     * ### 주의사항
-     * - counter 객체를 직접 반환하므로 ViewModel에서 수정 가능
-     * - 더 안전하게 하려면: return counter.copy() (복사본 반환)
-     *
-     * @return 현재 CounterModel 인스턴스
-     */
     fun getCounter() : CounterModel {
         return _counter
     }
 
-    /**
-     * ### 동작
-     * - counter.count를 1 증가 (0 → 1, 5 → 6)
-     * - CounterModel의 count가 var이므로 가능
-     *
-     * ### 단방향 데이터 플로우
-     * View (버튼 클릭)
-     *   → ViewModel.increment()
-     *   → Repository.incrementCounter() ✅ 여기
-     *   → counter.count++
-     *   → ViewModel이 새 값 감지
-     *   → View 업데이트
-     *
-     * ### 실제 앱에서는?
-     * ```kotlin
-     * suspend fun incrementCounter() {
-     *     counter.count++
-     *     dao.updateCounter(counter) // DB에 저장
-     * }
-     * ```
-     */
     fun incrementCounter() {
         _counter.count++
     }

@@ -60,12 +60,6 @@ class MainActivity : ComponentActivity() {
          * ## setContent { }
          *
          * Jetpack Compose UI를 설정하는 함수입니다.
-         *
-         * ### 특징
-         * - 기존의 setContentView(R.layout.activity_main) 대체
-         * - XML 레이아웃 대신 Kotlin 코드로 UI 작성
-         * - 람다 블록 안에 모든 UI 구성 요소를 작성
-         * - 선언형(Declarative) UI 프로그래밍 방식
          */
         setContent {
             /**
@@ -90,48 +84,11 @@ class MainActivity : ComponentActivity() {
              */
             val viewModel : CounterViewModel = viewModel()
 
-            /**
-             * ## MaterialTheme
-             *
-             * Material Design 3의 테마를 적용합니다.
-             *
-             * ### 제공하는 것
-             * - 색상 스키마 (colorScheme): primary, secondary, background 등
-             * - 타이포그래피 (typography): 텍스트 스타일
-             * - 도형 (shapes): 버튼, 카드 등의 모서리 스타일
-             *
-             * ### 왜 필요한가?
-             * - 일관된 디자인 시스템 제공
-             * - 다크 모드 자동 지원
-             * - Material Design 가이드라인 준수
-             */
             MaterialTheme {
-                /**
-                 * ## Surface
-                 *
-                 * Material Design의 기본 컨테이너 컴포넌트입니다.
-                 *
-                 * ### 역할
-                 * - 배경색과 elevation(그림자) 제공
-                 * - 자식 컴포넌트를 담는 컨테이너
-                 * - Material Design 계층 구조의 기본 단위
-                 *
-                 * ### modifier = Modifier.fillMaxSize()
-                 * - 부모(화면 전체)를 가득 채움
-                 * - width = MATCH_PARENT, height = MATCH_PARENT와 동일
-                 *
-                 * ### color = MaterialTheme.colorScheme.background
-                 * - 테마의 배경색 사용
-                 * - 다크 모드에서 자동으로 어두운 색으로 변경됨
-                 */
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    /**
-                     * 실제 앱의 UI 컨텐츠를 표시
-                     * ViewModel을 전달하여 데이터와 로직 연결
-                     */
                     TheCounterApp(viewModel)
                 }
             }
@@ -166,177 +123,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TheCounterApp(viewModel : CounterViewModel) {
 
-    /**
-     * ## Column
-     *
-     * 자식 컴포넌트를 세로(수직) 방향으로 배치하는 레이아웃입니다.
-     *
-     * ### Android View와 비교
-     * - LinearLayout (orientation = vertical)과 유사
-     * - 하지만 더 간결하고 선언적
-     *
-     * ### modifier = Modifier.fillMaxSize()
-     * - 화면 전체를 채움 (너비와 높이 모두)
-     * - 부모(Surface)의 크기를 그대로 사용
-     */
     Column(
         modifier = Modifier.fillMaxSize(),
-
-        /**
-         * ## verticalArrangement = Arrangement.Center
-         *
-         * 자식 요소들을 세로 방향으로 어떻게 배치할지 결정합니다.
-         *
-         * ### Arrangement.Center
-         * - 자식 요소들을 세로 방향 중앙에 배치
-         * - 위아래 공간이 동일하게 분배됨
-         *
-         * ### 다른 옵션들
-         * - Arrangement.Top: 위쪽 정렬
-         * - Arrangement.Bottom: 아래쪽 정렬
-         * - Arrangement.SpaceBetween: 요소 사이 공간 균등 분배
-         * - Arrangement.SpaceAround: 요소 주변 공간 균등 분배
-         */
         verticalArrangement = Arrangement.Center,
-
-        /**
-         * ## horizontalAlignment = Alignment.CenterHorizontally
-         *
-         * 자식 요소들을 가로 방향으로 어떻게 정렬할지 결정합니다.
-         *
-         * ### Alignment.CenterHorizontally
-         * - 모든 자식 요소를 가로 방향 중앙에 배치
-         * - 왼쪽과 오른쪽 여백이 동일
-         *
-         * ### 다른 옵션들
-         * - Alignment.Start: 왼쪽 정렬
-         * - Alignment.End: 오른쪽 정렬
-         *
-         * ### 결과적으로
-         * - verticalArrangement + horizontalAlignment
-         * - 모든 요소가 화면 정중앙에 배치됨!
-         */
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        /**
-         * ## Text - 카운트 값 표시
-         *
-         * 현재 카운트 값을 화면에 표시하는 텍스트입니다.
-         *
-         * ### text = "Count: ${viewModel.count.value}"
-         *
-         * #### viewModel.count
-         * - 타입: MutableState<Int>
-         * - ViewModel에서 관리하는 상태
-         * - 값이 변경되면 이 Text를 포함한 Composable이 재구성됨
-         *
-         * #### .value
-         * - MutableState에서 실제 Int 값을 가져옴
-         * - count.value가 0이면 "Count: 0" 표시
-         * - count.value가 5이면 "Count: 5" 표시
-         *
-         * #### 문자열 템플릿 ${}
-         * - Kotlin의 문자열 보간(interpolation) 기능
-         * - ${표현식} 형태로 값을 문자열에 삽입
-         *
-         * ### 재구성(Recomposition) 동작
-         * 1. 사용자가 Increment 버튼 클릭
-         * 2. viewModel.increment() 호출
-         * 3. viewModel.count.value가 0 → 1로 변경
-         * 4. Compose가 변경 감지
-         * 5. 이 Text Composable만 재구성
-         * 6. "Count: 0" → "Count: 1"로 화면 업데이트
-         */
         Text(
             text = "Count: ${viewModel.count.value}",
-
-            /**
-             * ## fontSize = 24.sp
-             *
-             * 텍스트 크기를 설정합니다.
-             *
-             * ### sp (Scalable Pixels)
-             * - 사용자의 글꼴 크기 설정을 반영하는 단위
-             * - 접근성(Accessibility)을 위해 텍스트에 사용
-             * - 사용자가 시스템에서 "큰 글꼴" 설정 시 자동으로 커짐
-             *
-             * ### dp vs sp
-             * - dp: 레이아웃 크기, 여백 등에 사용 (고정 크기)
-             * - sp: 텍스트 크기에 사용 (사용자 설정 반영)
-             */
-            fontSize = 24.sp,
-
-            /**
-             * ## fontWeight = FontWeight.Bold
-             *
-             * 텍스트를 굵게 표시합니다.
-             *
-             * ### 다른 옵션들
-             * - FontWeight.Normal: 기본 두께
-             * - FontWeight.Light: 얇게
-             * - FontWeight.Medium: 중간 두께
-             * - FontWeight.Bold: 굵게
-             * - FontWeight.Black: 가장 굵게
-             * - FontWeight(500): 숫자로 직접 지정 (100~900)
-             */
             fontWeight = FontWeight.Bold
         )
 
-        /**
-         * ## Spacer
-         *
-         * UI 요소 사이에 빈 공간을 만드는 컴포넌트입니다.
-         *
-         * ### modifier = Modifier.height(16.dp)
-         * - 세로 방향으로 16dp의 공간 생성
-         * - Text와 Row(버튼들) 사이의 간격
-         *
-         * ### dp (Density-independent Pixels)
-         * - 화면 밀도와 무관한 픽셀 단위
-         * - 모든 기기에서 동일한 물리적 크기 유지
-         * - 1dp ≈ 1/160 인치
-         *
-         * ### 왜 Spacer를 사용하나?
-         * - padding보다 의도가 명확함
-         * - 레이아웃 구조를 직관적으로 표현
-         * - 재사용 가능한 간격 컴포넌트
-         */
         Spacer(modifier = Modifier.height(16.dp))
 
-        /**
-         * ## Row
-         *
-         * 자식 컴포넌트를 가로(수평) 방향으로 배치하는 레이아웃입니다.
-         *
-         * ### Android View와 비교
-         * - LinearLayout (orientation = horizontal)과 유사
-         *
-         * ### 기본 동작
-         * - 자식 요소들을 왼쪽부터 오른쪽으로 배치
-         * - 자식의 크기만큼만 공간 차지 (wrap_content)
-         * - Column의 horizontalAlignment에 따라 중앙 정렬됨
-         */
         Row {
-            /**
-             * ## Button - Increment
-             *
-             * 카운트를 증가시키는 버튼입니다.
-             *
-             * ### onClick = { viewModel.increment() }
-             *
-             * #### onClick: 람다 함수
-             * - 버튼이 클릭되면 실행될 코드
-             * - () -> Unit 타입 (파라미터 없고, 반환값 없음)
-             *
-             * ### 실행 흐름
-             * 1. 사용자가 버튼 터치
-             * 2. onClick 람다 실행
-             * 3. viewModel.increment() 호출
-             * 4. ViewModel에서 count.value++
-             * 5. State 변경 감지
-             * 6. Text Composable 재구성
-             * 7. 화면에 새로운 값 표시
-             */
             Button(onClick = { viewModel.increment() }) {
                 Text(text = "Increment")
             }
