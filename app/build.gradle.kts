@@ -60,7 +60,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Image loading
-    implementation("io.coil-kt:coil-compose")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+
 
     // Junit
     // 1. AndroidX Test: JUnit4 테스트 러너를 Android 환경에서 사용 가능하게 합니다.
