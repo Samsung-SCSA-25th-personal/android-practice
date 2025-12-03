@@ -1,4 +1,4 @@
-package com.example.android_practice
+package com.example.android_practice.receipe
 
 /**
  * 개별 카테고리 정보를 담는 데이터 클래스

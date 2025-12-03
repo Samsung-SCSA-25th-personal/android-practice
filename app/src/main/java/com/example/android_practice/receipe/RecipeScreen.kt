@@ -1,4 +1,4 @@
-package com.example.android_practice
+package com.example.android_practice.receipe
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

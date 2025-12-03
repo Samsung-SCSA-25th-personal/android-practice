@@ -1,4 +1,4 @@
-package com.example.android_practice
+package com.example.android_practice.receipe
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
