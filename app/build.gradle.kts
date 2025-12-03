@@ -49,6 +49,16 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    // Compose ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation("com.google.android.material:material:1.12.0")
+
+    // Network calls
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // Json to Kotlin object mapping
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Image loading
+    implementation("io.coil-kt:coil-compose")
 }
