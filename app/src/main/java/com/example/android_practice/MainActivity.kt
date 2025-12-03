@@ -6,47 +6,85 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.android_practice.navigate.FirstScreen
+import com.example.android_practice.navigate.SecondScreen
 
 /**
- * # MainActivity (MVVM의 View 계층)
+ * # MainActivity (MVVM - View 계층)
  *
  * ## 📌 역할
- * - Android 앱 실행 시 **가장 먼저 실행되는 진입점**
- * - Jetpack Compose 화면을 **setContent {}** 안에 선언하여 UI를 그리는 컨테이너 역할
- * - 상태(state) 변경에 따라 UI가 자동으로 다시 그려지는 선언형 UI 환경 제공
+ * - Android 앱 실행 시 가장 먼저 호출되는 진입점(Entry Point)
+ * - Jetpack Compose UI를 setContent {} 블록 안에서 렌더링
+ * - Activity는 오직 'UI 컨테이너' 역할만 수행하며, 비즈니스 로직은 ViewModel로 분리
  *
- * ## 📌 ComponentActivity를 상속하는 이유
- * - Jetpack Compose를 사용하기 위한 기본 Activity
- * - setContent { } 함수를 제공 → Compose UI 트리를 Activity 위에서 실행 가능
- * - LifecycleOwner 제공 → ViewModel 및 LiveData / StateFlow와 자연스럽게 연결됨
- *
- * ## 📌 MVVM에서 MainActivity의 위치
- * - **View** 계층
- * - ViewModel을 직접 생성하거나(권장: Hilt), viewModel()로 가져와 상태만 구독함
- * - 로직은 절대 Activity 안에 넣지 않으며, Activity는 오직 UI 프레임만 제공
- *
- * ## 📌 전체 흐름
- * 1. MainActivity → setContent {} 실행
- * 2. RecipeScreen() 호출 → ViewModel을 통해 상태(categorieState) 관찰
- * 3. ViewModel이 API 호출하여 상태 업데이트
- * 4. UI는 상태(State)에 따라 자동으로 재구성(loading / success / error)
+ * ## 📌 ComponentActivity를 사용하는 이유
+ * - Compose를 실행할 수 있는 기본 Activity
+ * - setContent {} 제공 → Compose UI 트리 구성
+ * - LifecycleOwner 제공 → ViewModel(StateFlow)과 자연스럽게 연결됨
  */
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Jetpack Compose 진입점
+        // ⭐ Jetpack Compose 진입 지점
         setContent {
             MaterialTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // 실제 화면을 구성하는 Composable 호출
-                    RecipeScreen()
+                    // 앱 전체의 NavGraph를 포함하는 Composable
+                    MyApp()
                 }
             }
+        }
+    }
+}
+
+/**
+ * # MyApp()
+ *
+ * ## 📌 역할
+ * - NavController 생성
+ * - NavHost로 앱의 화면 이동(화면 라우팅) 정의
+ * - 각 composable("route") 내부에서 실제 화면 호출
+ *
+ * ## 📌 전체 흐름
+ * 1. rememberNavController() → 내비게이션 컨트롤러 생성
+ * 2. NavHost → 시작 화면(startDestination)을 기준으로 Graph 구성
+ * 3. composable(route) → 각 화면을 NavGraph에 매핑
+ * 4. 화면에서 람다 호출로 navController.navigate("route") 실행 → 화면 이동
+ */
+@Composable
+fun MyApp() {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "first_screen"
+    ) {
+        // 첫 화면
+        composable("first_screen") {
+            FirstScreen(
+                onNext = {
+                    navController.navigate("second_screen")
+                }
+            )
+        }
+
+        // 두 번째 화면
+        composable("second_screen") {
+            SecondScreen(
+                onBack = {
+                    navController.navigate("first_screen")
+                }
+            )
         }
     }
 }
