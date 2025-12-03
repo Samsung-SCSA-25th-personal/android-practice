@@ -11,8 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.android_practice.navigate.FirstScreen
+import com.example.android_practice.navigate.FirstScreenRoute
 import com.example.android_practice.navigate.SecondScreen
+import com.example.android_practice.navigate.SecondScreenRoute
 
 /**
  * # MainActivity (MVVM - View 계층)
@@ -53,13 +56,19 @@ class MainActivity : ComponentActivity() {
  * ## 📌 역할
  * - NavController 생성
  * - NavHost로 앱의 화면 이동(화면 라우팅) 정의
- * - 각 composable("route") 내부에서 실제 화면 호출
+ * - Type-Safe Navigation을 사용하여 타입 안전한 네비게이션 구현
  *
  * ## 📌 전체 흐름
  * 1. rememberNavController() → 내비게이션 컨트롤러 생성
- * 2. NavHost → 시작 화면(startDestination)을 기준으로 Graph 구성
- * 3. composable(route) → 각 화면을 NavGraph에 매핑
- * 4. 화면에서 람다 호출로 navController.navigate("route") 실행 → 화면 이동
+ * 2. NavHost → 시작 화면(startDestination)을 Serializable 객체로 지정
+ * 3. composable<T> → 타입 파라미터로 각 화면을 NavGraph에 매핑
+ * 4. 화면에서 Serializable 객체를 navigate()에 전달 → 타입 안전한 화면 이동
+ *
+ * ## 📌 Type-Safe Navigation 장점
+ * - 컴파일 타임에 라우트 오류 감지
+ * - 파라미터 타입 자동 검증
+ * - IDE 자동완성 지원
+ * - 리팩토링 시 안전성 보장
  */
 @Composable
 fun MyApp() {
@@ -67,22 +76,24 @@ fun MyApp() {
 
     NavHost(
         navController = navController,
-        startDestination = "first_screen"
+        startDestination = FirstScreenRoute
     ) {
         // 첫 화면
-        composable("first_screen") {
+        composable<FirstScreenRoute> {
             FirstScreen(
-                onNext = {
-                    navController.navigate("second_screen")
+                onNext = { name ->
+                    navController.navigate(SecondScreenRoute(name = name))
                 }
             )
         }
 
         // 두 번째 화면
-        composable("second_screen") {
+        composable<SecondScreenRoute> { backStackEntry ->
+            val args = backStackEntry.toRoute<SecondScreenRoute>()
             SecondScreen(
+                name = args.name,
                 onBack = {
-                    navController.navigate("first_screen")
+                    navController.popBackStack()
                 }
             )
         }

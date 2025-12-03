@@ -31,7 +31,11 @@ import androidx.compose.ui.unit.sp
  * - 단순한 화면 구조로, 네비게이션 학습 예제용으로 적합
  */
 @Composable
-fun SecondScreen(onBack: () -> Unit) {
+fun SecondScreen(name: String,
+                 onBack: () -> Unit) {
+
+    // 빈 이름 처리
+    val displayName = if (name.isBlank()) "No name" else name
 
     Column(
         modifier = Modifier
@@ -45,10 +49,10 @@ fun SecondScreen(onBack: () -> Unit) {
         Text("This is the Second Screen", fontSize = 24.sp)
 
         // 간단한 메시지
-        Text("Welcome", fontSize = 24.sp)
+        Text("Welcome $displayName", fontSize = 24.sp)
 
         // 버튼을 눌러 첫 번째 화면으로 이동
-        Button(onClick = onBack) {
+        Button(onClick = { onBack() }) {
             Text("Go to First Screen")
         }
     }
@@ -57,5 +61,5 @@ fun SecondScreen(onBack: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SecondScreenPreview() {
-    SecondScreen {}
+    SecondScreen(name = "Preview User", onBack = {})
 }

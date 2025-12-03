@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
  * - 중앙 정렬된 Column을 사용해 텍스트, 입력창, 버튼 배치
  */
 @Composable
-fun FirstScreen(onNext: () -> Unit) {
+fun FirstScreen(onNext: (String) -> Unit) {
 
     // ⭐ UI 상태(value) - 화면 회전 시 유지되지 않는 간단 상태
     val name = remember { mutableStateOf("") }
@@ -60,7 +60,7 @@ fun FirstScreen(onNext: () -> Unit) {
         )
 
         // ❗ 버튼 클릭 시 상위에서 전달받은 콜백 실행 → SecondScreen으로 이동
-        Button(onClick = onNext) {
+        Button(onClick = { onNext(name.value) }) {
             Text("Go to Second Screen")
         }
     }
@@ -69,5 +69,5 @@ fun FirstScreen(onNext: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun FirstScreenPreview() {
-    FirstScreen {}
+    FirstScreen(onNext = {})
 }
