@@ -62,6 +62,9 @@ dependencies {
     // Image loading
     implementation("io.coil-kt:coil-compose:2.7.0")
 
+    // Navigate
+    implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation(libs.androidx.navigation.compose)
 
     // Junit
     // 1. AndroidX Test: JUnit4 테스트 러너를 Android 환경에서 사용 가능하게 합니다.
